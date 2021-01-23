@@ -2,9 +2,10 @@ import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { act } from 'react-dom/test-utils';
 import BubblePage from "./BubblePage";
+import Bubbles from './Bubbles';
 
-import { getColors as mockGetColors } from './BubblePage';
-jest.mock('./BubblePage');
+import { getColors as mockGetColors } from '../api/getColors';
+jest.mock('../api/getColors');
 
 const colorData = {
   data: [
@@ -28,7 +29,9 @@ const colorData = {
 
 test("Fetches data and renders the bubbles", async () => {
   // Finish this test
-  mockGetColors.mockResolvedValueOnce(colorData);
+
+  console.log(mockGetColors);
+  // mockGetColors.mockResolvedValueOnce(colorData);
   const { rerender } = render(<BubblePage />);
   screen.debug();
   await act(async () => {
@@ -36,7 +39,7 @@ test("Fetches data and renders the bubbles", async () => {
     screen.debug();
   });
 
-  const title = screen.getByRole('paragraph');
+  const title = screen.getByText(/bubbles/i);
 
   await waitFor(() => {
     expect(title).toHaveTextContent(/bubbles/i)
