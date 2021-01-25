@@ -2,7 +2,6 @@ import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { act } from 'react-dom/test-utils';
 import BubblePage from "./BubblePage";
-import Bubbles from './Bubbles';
 
 import { getColors as mockGetColors } from '../api/getColors';
 jest.mock('../api/getColors');
@@ -29,19 +28,24 @@ const colorData = {
 
 test("Fetches data and renders the bubbles", async () => {
   // Finish this test
-
   console.log(mockGetColors);
-  // mockGetColors.mockResolvedValueOnce(colorData);
+  mockGetColors.mockResolvedValueOnce(colorData);
   const { rerender } = render(<BubblePage />);
-  screen.debug();
   await act(async () => {
-    await rerender(<BubblePage />, <Bubbles />);
+    rerender(<BubblePage />);
     screen.debug();
   });
 
   const title = screen.getByText(/bubbles/i);
 
   await waitFor(() => {
-    expect(title).toHaveTextContent(/bubbles/i)
+    const renderedBubbles = screen.getAllByTestId('bubbles');
+    expect(title).toHaveTextContent(/bubbles/i);
+    expect(renderedBubbles).toHaveLength(2);
+    const bubble1 = screen.getByText('aliceblue');
+    expect(bubble1).toHaveTextContent('aliceblue');
+    const bubble2 = screen.getByText('limegreen');
+    expect(bubble2).toHaveTextContent('limegreen');
   });
+  screen.debug();
 });
