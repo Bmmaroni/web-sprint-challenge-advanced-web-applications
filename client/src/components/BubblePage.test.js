@@ -28,7 +28,6 @@ const colorData = {
 
 test("Fetches data and renders the bubbles", async () => {
   // Finish this test
-  console.log(mockGetColors);
   mockGetColors.mockResolvedValueOnce(colorData);
   const { rerender } = render(<BubblePage />);
   await act(async () => {
